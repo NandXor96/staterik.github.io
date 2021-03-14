@@ -40,7 +40,7 @@
         #cursor {
             border: 1px solid #e6e6e6;
             margin-top: 3.5px;
-            margin-left: -3px;
+            margin-left: 1px;
             height: 13px;
             width: 0px;
         }
@@ -79,10 +79,41 @@
             class="info">e-Mail:&nbsp;</span>erik<span>&#64;</span>appel.cloud<br />
         ---------------------------------<br />
         <div style="display:flex"><span class="identifier">[guest@appel.cloud <span
-                    class="location">~</span>]$&nbsp;</span>
+                    class="location">~</span>]$&nbsp;</span><span id="daft"></span>
             <div id="cursor"></div>
         </div>
 </body>
-<script>let cursor = document.getElementById('cursor'); setInterval(() => { cursor.style.display = cursor.style.display == 'none' ? 'block' : 'none'; }, 500);</script>
+<script>
+    const daft = document.getElementById('daft');
+    const text = ['Harder', 'Better', 'Faster', 'Stronger', 'Erik!'];
+    let index = 0;
+    let cycle = 0;
+    let up = true;
+
+    setInterval(() => {
+        if (index >= text.length) {
+            index = 0;
+        }
+        if (up) {
+            if (cycle < text[index].length) {
+                daft.innerHTML += text[index].substr(cycle, 1);
+                cycle++;
+            }
+            else {
+                up = false;
+            }
+        }
+        else {
+            if (cycle > 0) {
+                daft.innerHTML = daft.innerHTML.substr(0, daft.innerHTML.length - 1);
+                cycle--;
+            }
+            else {
+                index++;
+                up = true;
+            }
+        }
+    }, 80);
+</script>
 
 </html>
