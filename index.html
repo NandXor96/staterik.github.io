@@ -86,34 +86,47 @@
 <script>
     const daft = document.getElementById('daft');
     const text = ['Harder', 'Better', 'Faster', 'Stronger', 'Erik!'];
+    let cursorInterval;
     let index = 0;
     let cycle = 0;
     let up = true;
 
-    setInterval(() => {
-        if (index >= text.length) {
-            index = 0;
-        }
-        if (up) {
-            if (cycle < text[index].length) {
-                daft.innerHTML += text[index].substr(cycle, 1);
-                cycle++;
+    const cursorBlink = () => {
+        cursor.style.display = cursor.style.display == 'none' ? 'block' : 'none';
+    }
+
+    let interval = setInterval(cursorBlink, 500);
+
+    setTimeout(() => {
+        clearInterval(interval);
+        interval = setInterval(() => {
+            if (index >= text.length) {
+                clearInterval(interval);
+                interval = setInterval(cursorBlink, 500);
             }
             else {
-                up = false;
+                if (up) {
+                    if (cycle < text[index].length) {
+                        daft.innerHTML += text[index].substr(cycle, 1);
+                        cycle++;
+                    }
+                    else {
+                        up = false;
+                    }
+                }
+                else {
+                    if (cycle > 0) {
+                        daft.innerHTML = daft.innerHTML.substr(0, daft.innerHTML.length - 1);
+                        cycle--;
+                    }
+                    else {
+                        index++;
+                        up = true;
+                    }
+                }
             }
-        }
-        else {
-            if (cycle > 0) {
-                daft.innerHTML = daft.innerHTML.substr(0, daft.innerHTML.length - 1);
-                cycle--;
-            }
-            else {
-                index++;
-                up = true;
-            }
-        }
-    }, 80);
+        }, 80)
+    }, 2000);
 </script>
 
 </html>
